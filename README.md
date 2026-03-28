@@ -1,0 +1,194 @@
+# Determinants of Homeownership in Portugal
+
+A microeconometrics study examining what drives homeownership rates across **308 Portuguese municipalities** using cross-sectional data from the 2021 national census. The analysis compares OLS with robust standard errors against fractional response models (logit and probit) to account for the bounded nature of rates as a dependent variable.
+
+---
+
+## Preview
+
+![Homeownership Distribution](figures/01_homeownership_distribution.png)
+![Marginal Effects Comparison](figures/08_marginal_effects_comparison.png)
+![Coefficient Plot](figures/07_ols_coefficient_plot.png)
+
+---
+
+## Objective
+
+Homeownership rates vary considerably across Portuguese municipalities — from under 50% in urban centers to over 90% in rural areas. This project asks: **what economic, demographic, and housing market factors explain this geographic variation?**
+
+Key questions:
+- Does higher municipal income actually increase homeownership? (Spoiler: no)
+- How does the concentration of young adults affect tenure decisions?
+- Does tourism intensity crowd out local homeownership?
+- Do fractional response models outperform OLS when the outcome is a rate?
+
+---
+
+## Dataset
+
+| Property | Detail |
+|---|---|
+| **Source** | INE — Instituto Nacional de Estatística, 2021 Portuguese Census |
+| **Unit** | Municipality (concelho) |
+| **Sample** | 308 Portuguese municipalities |
+| **Dependent variable** | Homeownership rate (share of owner-occupied dwellings) |
+| **File** | `data/raw/base data.xlsx` |
+
+### Variables
+
+| Variable | Description | Transformation |
+|---|---|---|
+| `homeownership_rate` | Share of owner-occupied dwellings | Outcome (bounded [0,1]) |
+| `income` | Average municipal income | Log |
+| `houseprice_growth` | Annual house price growth rate | None |
+| `unemp_total` | Total unemployment rate | Log |
+| `high_educ_share` | Share with higher education | Log |
+| `share_25_34` | Share of population aged 25–34 | None |
+| `share_male` | Share of male population | None |
+| `foreign_share` | Share of foreign residents | Log |
+| `tourism_intensity` | Tourism beds per resident | Log(x+1) |
+| `pop_total` | Total municipal population | Log |
+
+---
+
+## Methodology
+
+### Step 1 — Data Preparation
+- Load municipality-level data from INE 2021 Census
+- Apply log transformations to right-skewed variables
+- Generate descriptive statistics for raw and transformed variables
+
+### Step 2 — Exploratory Analysis
+- Distribution plots (homeownership rate, income, tourism)
+- Scatter plots vs homeownership rate for key predictors
+- Correlation heatmap across all model variables
+
+### Step 3 — OLS with Robust Standard Errors
+- Baseline linear regression with HC1 heteroskedasticity-robust standard errors
+- Coefficient plot with 95% confidence intervals
+- Residuals vs fitted values diagnostic plot
+
+### Step 4 — Diagnostic Tests
+- **VIF**: multicollinearity check
+- **Breusch-Pagan**: heteroskedasticity test
+- **White Test**: alternative heteroskedasticity test
+- **RESET Test**: functional form misspecification
+
+### Step 5 — Fractional Response Models
+- **Fractional Logit**: GLM with binomial family and logit link
+- **Fractional Probit**: GLM with binomial family and probit link
+- Both estimated with HC1 robust standard errors
+- Average Marginal Effects (AME) computed via `marginaleffects`
+
+### Step 6 — Model Comparison
+- Side-by-side stargazer table (OLS vs Logit vs Probit)
+- AIC, BIC, and deviance comparison
+- AME comparison plot across all three models
+
+---
+
+## Key Results
+
+### Main Findings
+
+| Variable | OLS | Frac. Logit AME | Frac. Probit AME | Direction |
+|---|---|---|---|---|
+| Log(Income) | Negative*** | Negative*** | Negative*** | ↓ |
+| Share 25–34 | Negative*** | Negative*** | Negative*** | ↓ |
+| Log(Unemployment) | Negative* | Negative* | Negative* | ↓ |
+| Log(High Education) | Positive | Positive* | Positive* | ↑ |
+| Log(Tourism) | Not sig. | Not sig. | Not sig. | — |
+| House Price Growth | Not sig. | Not sig. | Not sig. | — |
+
+### Interpretation
+
+**The income puzzle**: Higher-income municipalities have *lower* homeownership — contrary to individual-level predictions. This reflects a compositional effect: high-income urban areas attract mobile, renting workers, while rural areas with lower incomes have historically high owner-occupation rates.
+
+**Youth and affordability**: A larger share of 25–34 year olds is strongly associated with lower homeownership — consistent with Portugal's housing affordability crisis disproportionately affecting young adults.
+
+**Tourism null finding**: No significant effect of tourism intensity on municipal homeownership rates — suggesting displacement effects (if any) are not captured at the municipality level.
+
+---
+
+## Project Structure
+
+```
+homeownership-portugal/
+│
+├── data/
+│   ├── raw/                  ← base data.xlsx (INE 2021 Census)
+│   └── processed/            ← RDS files generated by scripts
+│
+├── scripts/
+│   ├── 01_data_preparation.R     # Load, clean, transform, descriptive stats
+│   ├── 02_exploratory_analysis.R # Distributions, scatter plots, correlation
+│   ├── 03_ols_regression.R       # OLS + robust SE + all diagnostic tests
+│   ├── 04_fractional_models.R    # Fractional logit & probit + marginal effects
+│   └── 05_model_comparison.R     # Stargazer table + model fit + key findings
+│
+├── figures/                  ← All PNG plots (auto-generated)
+├── outputs/                  ← CSV tables (auto-generated)
+└── README.md
+```
+
+---
+
+## How to Reproduce
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/homeownership-portugal.git
+   cd homeownership-portugal
+   ```
+
+2. **Place the data file** at `data/raw/base data.xlsx`
+
+3. **Run scripts in order** from the project root in RStudio:
+   ```r
+   source("scripts/01_data_preparation.R")
+   source("scripts/02_exploratory_analysis.R")
+   source("scripts/03_ols_regression.R")
+   source("scripts/04_fractional_models.R")
+   source("scripts/05_model_comparison.R")
+   ```
+
+Required packages are installed automatically by script 01.
+
+---
+
+##  Tools & Packages
+
+| Package | Purpose |
+|---|---|
+| `readxl` | Excel data import |
+| `dplyr` / `tidyr` | Data manipulation |
+| `ggplot2` | All visualizations |
+| `car` | VIF multicollinearity test |
+| `lmtest` / `sandwich` | Robust standard errors, BP test, RESET |
+| `marginaleffects` | Average marginal effects for GLM |
+| `stargazer` | Regression comparison tables |
+| `moments` | Skewness and kurtosis |
+
+---
+
+## Future Work
+
+- **Spatial autocorrelation**: test for Moran's I and fit spatial lag/error models
+- **Panel extension**: combine 2011 and 2021 census data for a first-difference or FE analysis
+- **Instrumental variables**: instrument for income or house prices to address endogeneity
+- **Regional fixed effects**: add NUTS-II region dummies to absorb unobserved regional heterogeneity
+- **Interactive map**: build a Shiny app visualizing homeownership rates and predictors by municipality
+
+---
+
+## Authors
+
+**Majda El Oumami · Américo Serra · Ciro Mainella**
+
+ISEG — Lisbon School of Economics and Management, University of Lisbon  
+Master's in Applied Econometrics and Forecasting · Microeconometrics  
+Supervisor: Esmeralda Arranhado · November 2025
+
+---
+
+*Data sourced from [INE — Instituto Nacional de Estatística](https://www.ine.pt), 2021 Portuguese Census.*

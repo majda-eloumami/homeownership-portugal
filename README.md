@@ -53,35 +53,35 @@ Key questions:
 
 ## Methodology
 
-### Step 1 — Data Preparation
+### Step 1: Data Preparation
 - Load municipality-level data from INE 2021 Census
 - Apply log transformations to right-skewed variables
 - Generate descriptive statistics for raw and transformed variables
 
-### Step 2 — Exploratory Analysis
+### Step 2: Exploratory Analysis
 - Distribution plots (homeownership rate, income, tourism)
 - Scatter plots vs homeownership rate for key predictors
 - Correlation heatmap across all model variables
 
-### Step 3 — OLS with Robust Standard Errors
+### Step 3: OLS with Robust Standard Errors
 - Baseline linear regression with HC1 heteroskedasticity-robust standard errors
 - Coefficient plot with 95% confidence intervals
 - Residuals vs fitted values diagnostic plot
 
-### Step 4 — Diagnostic Tests
+### Step 4: Diagnostic Tests
 - **VIF**: multicollinearity check
 - **Breusch-Pagan**: heteroskedasticity test
 - **White Test**: alternative heteroskedasticity test
 - **RESET Test**: functional form misspecification
 
-### Step 5 — Fractional Response Models
+### Step 5: Fractional Response Models
 - **Fractional Logit**: GLM with binomial family and logit link
 - **Fractional Probit**: GLM with binomial family and probit link
 - Both estimated with HC1 robust standard errors
 - Average Marginal Effects (AME) computed via `marginaleffects`
 
-### Step 6 — Model Comparison
-- Side-by-side stargazer table (OLS vs Logit vs Probit)
+### Step 6: Model Comparison
+- Side by side stargazer table (OLS vs Logit vs Probit)
 - AIC, BIC, and deviance comparison
 - AME comparison plot across all three models
 

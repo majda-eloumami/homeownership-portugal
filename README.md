@@ -14,7 +14,7 @@ A microeconometrics study examining what drives homeownership rates across **308
 
 ## Objective
 
-Homeownership rates vary considerably across Portuguese municipalities — from under 50% in urban centers to over 90% in rural areas. This project asks: **what economic, demographic, and housing market factors explain this geographic variation?**
+Homeownership rates vary considerably across Portuguese municipalities from under 50% in urban centers to over 90% in rural areas. This project asks: **what economic, demographic, and housing market factors explain this geographic variation?**
 
 Key questions:
 - Does higher municipal income actually increase homeownership? (Spoiler: no)
@@ -28,7 +28,7 @@ Key questions:
 
 | Property | Detail |
 |---|---|
-| **Source** | INE — Instituto Nacional de Estatística, 2021 Portuguese Census |
+| **Source** | INE Instituto Nacional de Estatística, 2021 Portuguese Census |
 | **Unit** | Municipality (concelho) |
 | **Sample** | 308 Portuguese municipalities |
 | **Dependent variable** | Homeownership rate (share of owner-occupied dwellings) |
@@ -102,11 +102,11 @@ Key questions:
 
 ### Interpretation
 
-**The income puzzle**: Higher-income municipalities have *lower* homeownership — contrary to individual-level predictions. This reflects a compositional effect: high-income urban areas attract mobile, renting workers, while rural areas with lower incomes have historically high owner-occupation rates.
+**The income puzzle**: Higher-income municipalities have *lower* homeownership contrary to individual-level predictions. This reflects a compositional effect: high-income urban areas attract mobile, renting workers, while rural areas with lower incomes have historically high owner-occupation rates.
 
-**Youth and affordability**: A larger share of 25–34 year olds is strongly associated with lower homeownership — consistent with Portugal's housing affordability crisis disproportionately affecting young adults.
+**Youth and affordability**: A larger share of 25–34 year olds is strongly associated with lower homeownership,consistent with Portugal's housing affordability crisis disproportionately affecting young adults.
 
-**Tourism null finding**: No significant effect of tourism intensity on municipal homeownership rates — suggesting displacement effects (if any) are not captured at the municipality level.
+**Tourism null finding**: No significant effect of tourism intensity on municipal homeownership rates, suggesting displacement effects (if any) are not captured at the municipality level.
 
 ---
 
